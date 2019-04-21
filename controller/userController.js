@@ -1,22 +1,10 @@
 var db = require('./../database')
-const nodemailer = require('nodemailer')
+const transporter = require('./../helpers/nodemailer')
 const crypto = require('crypto')
-
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'burhan.d3mits@gmail.com',
-        pass: 'xtfdrabrjtlsoygf'
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-})
 
 module.exports = {
     getAllUser: (req, res) => {
         var sql = 'select * from user;'
-        // db dari const diatas, dan nama hasil itu terserah
         db.query(sql, (err, hasil) => {
             res.send(hasil)
         })
@@ -25,11 +13,10 @@ module.exports = {
         var username = req.query.username
         var sql = 'select * from user where username = ?'
         db.query(sql, username, (err, hasil) => {
-            res.send(hasil) // tampil di front end
+            res.send(hasil)
         })
     },
     getUserById: (req, res) => {
-        // id bisa diganti terserah kita ex : gue
         var id = req.params.id
         var sql = `select * from user where id = ${id};`
         db.query(sql, (err, hasil) => {
@@ -51,12 +38,12 @@ module.exports = {
                         from : 'OnOSepeda.com',
                         to : email ,
                         subject : 'Verifikasi Akun OnOSepeda.com',
-                        html : `<h2>Klik <a href="http://localhost:5000/verify?username=${nama}&password=${hashPassword}">Link</a> ini untuk mengaktifkan akun Anda</h2>`
+                        html : `<h2>Klik <a href="http://localhost:3000/verify?username=${nama}&password=${hashPassword}">Link</a> ini untuk mengaktifkan akun Anda</h2>`
                     }
                     transporter.sendMail(mailOptions, (err,hasil2) => {
                         res.send('Email Has Been Send')
                     })
-                    var sql2 = `insert into user set ?` //? akan ke replaced dengan data
+                    var sql2 = `insert into user set ?`
                     db.query(sql2, data, (err,hasil3) => {
                         if (err) throw err
                         res.send('Add User Sukses')
@@ -67,6 +54,7 @@ module.exports = {
             }
         })
     },
+        
     editUser : (req,res) => {
         var id = req.params.id
         var data = req.body
@@ -110,7 +98,8 @@ module.exports = {
 
     verifyUser : (req,res) => {
         username = req.query.username
-        var sql = `update user set verified = 1 where username = ${username}`
+        password = req.query.password
+        var sql = `update user set verified = 1 where username = ${username}&and password = '${password}'`
         db.query(sql, (err,hasil) => {
             if(err) throw err
             res.send('Email Anda Sudah terverifikasi')
@@ -118,3 +107,4 @@ module.exports = {
     }
 
 }
+
