@@ -97,14 +97,17 @@ module.exports = {
     },
 
     verifyUser : (req,res) => {
-        username = req.query.username
-        password = req.query.password
-        var sql = `update user set verified = 1 where username = ${username}&and password = '${password}'`
+        username = req.body.username
+        password = req.body.password
+        var sql = `update user set verified = 1 where username = '${username}'  and password = '${password}'`
         db.query(sql, (err,hasil) => {
             if(err) throw err
             res.send('Email Anda Sudah terverifikasi')
+            console.log(hasil);
+            
         })
     }
 
 }
+
 

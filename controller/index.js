@@ -1,12 +1,11 @@
 var userController = require('./userController')
 var productController = require('./productController')
-var sparepartController = require('./sparepartController')
-var frameController = require('./frameController')
-var aksesorisController = require('./aksesorisController')
 var categoryController = require('./categoryController')
+var cartController = require('./cartController')
+var wishController = require('./wishlistController')
 
 
 module.exports = {
     userController,
-    productController,sparepartController,frameController,aksesorisController,categoryController
+    productController,categoryController,cartController,wishController
 }

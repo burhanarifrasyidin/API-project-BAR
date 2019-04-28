@@ -10,19 +10,15 @@ const port = 2008
 const {
     productRouter,
     userRouter,
-    sparepartRouter,
-    frameRouter,
-    aksesorisRouter,
-    categoryRouter
+    categoryRouter,cartRouter,wishRouter
 } = require('./router')
 
 app.use('/upload', express.static('upload'))
 app.use('/user', userRouter)
 app.use('/product', productRouter)
-app.use('/sparepart', sparepartRouter)
-app.use('/frame', frameRouter)
-app.use('/aksesori', aksesorisRouter)
 app.use('/category', categoryRouter)
+app.use('/cart', cartRouter)
+app.use('/wishlist', wishRouter)
 
 
 
