@@ -10,7 +10,7 @@ const port = 2008
 const {
     productRouter,
     userRouter,
-    categoryRouter,cartRouter,wishRouter
+    categoryRouter,cartRouter,wishRouter,transaksiRouter,profilRouter
 } = require('./router')
 
 app.use('/upload', express.static('upload'))
@@ -19,7 +19,8 @@ app.use('/product', productRouter)
 app.use('/category', categoryRouter)
 app.use('/cart', cartRouter)
 app.use('/wishlist', wishRouter)
-
+app.use('/transaksi', transaksiRouter)
+app.use('/profile', profilRouter)
 
 
 app.listen(port, () => console.log('aktif di port' + port))

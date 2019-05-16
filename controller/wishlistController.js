@@ -2,7 +2,7 @@ var db = require('./../database')
 
 module.exports = {
     ShowWish: (req, res) => {
-        var sql = `select wishlist.id,p.nama_product, p.harga_product, p.discount_product, p.deskripsi_product, p.category_product, quantity,image from wishlist
+        var sql = `select wishlist.id,p.nama_product,wishlist.id_product, p.harga_product, p.discount_product, p.deskripsi_product, p.category_product, quantity,image from wishlist
         join user as u on wishlist.id_user = u.id 
         join product as p on wishlist.id_product = p.id
         where wishlist.id_user = ${req.params.id};`
