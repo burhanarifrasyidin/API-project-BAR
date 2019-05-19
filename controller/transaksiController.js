@@ -16,6 +16,24 @@ module.exports = {
                 res.send('Transaction has been Approved')
             })
     }, 
+    rejectTransaction : (req,res) => {
+        var sql = `update transaksi set status = '${req.body.status}' where id = ${req.params.id}`
+            db.query(sql, (err,hasil) => {
+                if(err) throw err
+                var Mailoptions = {
+                    from : 'OnOSepeda.com',
+                    to : req.body.email,
+                    subject : `Invoice ${req.body.no} || Status : Rejected`,
+                    html : `<h3> Dear ${req.body.username}, </h3>
+                    
+                    <p>It seems that your transaction has been rejected by our Admin. In order to complete your transaction again, please visit your transactions page in <a href="http://localhost:3000/payment/${req.body.no}">here</a> </p>`
+                }
+                transporter.sendMail(Mailoptions, (err,hasiltMail) => {
+                    if(err) throw err
+                    res.send('Transaction Rejected')
+                })
+            })
+    }, 
     //AS USER
     getTransactionsByUser : (req,res) => {
         var sql = `select * from transaksi
@@ -26,19 +44,19 @@ module.exports = {
         })
     },
     getTransactionDetail : (req,res) => {
-        var sql = `select * from transaksi_detail where order_number = '${req.params.order_number}';`
+        var sql = `select nama_product,harga_product,quantity from transaksi_detail where id = '${req.params.id}';`
         db.query(sql, (err,hasil) => {
             if(err) throw err
             res.send(hasil)
         })
     },
-    getTransactionPayment : (req,res) => {
-        var sql = `select * from transaksi_detail where id = '${req.params.id}';`
-        db.query(sql, (err,hasil) => {
-            if(err) throw err
-            res.send(hasil)
-        })
-    },
+    // getTransactionPayment : (req,res) => {
+    //     var sql = `select * from transaksi_detail where id = '${req.params.id}';`
+    //     db.query(sql, (err,hasil) => {
+    //         if(err) throw err
+    //         res.send(hasil)
+    //     })
+    // },
     uploadPayment : (req,res) => {
         var newData = JSON.parse(req.body.data)
         newData.bukti_transaksi = req.file.path
@@ -59,6 +77,20 @@ module.exports = {
             db.query(sql, (err,hasil) => {
                 if(err) throw err
                 res.send(hasil)
+            })
+    },
+    unapprovedTransactionsUser : (req,res) => {
+        var sql = `select tanggal, item, total_harga, order_number, status from transaksi where id_user = ${req.params.id} and status NOT LIKE 'Approved';`
+        db.query(sql, (err,result) => {
+            if(err) throw err
+            res.send(result)
+        })
+    },
+    filterHistory : (req,res) => {
+        var sql = `select * from transaksi where id_user = ${req.query.id_user} and status = 'Approved' and tanggal like '%-${req.query.month}-%';`
+            db.query(sql, (err,result) => {
+                if(err) throw err
+                res.send(result)
             })
     }
 }

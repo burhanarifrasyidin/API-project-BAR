@@ -67,5 +67,19 @@ module.exports = {
             if (err) throw err
             res.send(hasil)
         })
+    },
+    filterProd : (req,res) => {
+        var sql = `select * from product where category_product like '${req.query.category_product}%';`
+            db.query(sql, (err,hasil) => {
+                if(err) throw err
+                res.send(hasil)
+            })
+    },
+    saleProduct : (req,res)=>{
+        var sql = `select * from product where discount_product >= 15;`
+            db.query(sql, (err,hasil) => {
+                if(err) throw err
+                res.send(hasil)
+            })
     }
 }

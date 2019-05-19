@@ -31,4 +31,26 @@ module.exports = {
                 res.send('Delete Category Sukses')
             })
     },
+    filterCat : (req,res) => {
+        var category = req.query.category
+        var sql = ''
+        if (category) {
+            sql = `select * from category where category like '${category}%'`
+        }
+        db.query(sql, (err, hasil) => {
+            if (err) throw err
+            res.send(hasil)
+        })
+    },
+    filterCatProd : (req,res) => {
+        var category = req.query.category
+        var sql = ''
+        if (category) {
+            sql = `select * from category where category like '${category}%'`
+        }
+        db.query(sql, (err, hasil) => {
+            if (err) throw err
+            res.send(hasil)
+        })
+    }
 }
