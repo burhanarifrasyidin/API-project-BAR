@@ -1,4 +1,6 @@
 var db = require('./../database')
+var transporter = require('./../helpers/nodemailer')
+
 
 module.exports = {
     //AS ADMIN
@@ -23,13 +25,14 @@ module.exports = {
                 var Mailoptions = {
                     from : 'OnOSepeda.com',
                     to : req.body.email,
-                    subject : `Invoice ${req.body.no} || Status : Rejected`,
+                    subject : `Invoice ${req.body.no} (Status : Rejected)`,
                     html : `<h3> Dear ${req.body.username}, </h3>
                     
-                    <p>It seems that your transaction has been rejected by our Admin. In order to complete your transaction again, please visit your transactions page in <a href="http://localhost:3000/payment/${req.body.no}">here</a> </p>`
+                    <p>Tampaknya transaksi Anda telah ditolak oleh Admin kami. Untuk menyelesaikan transaksi Anda lagi, silakan kunjungi halaman transaksi Anda di
+                    <a href="http://localhost:3000/payment/${req.body.no}">sini</a> </p>`
                 }
                 transporter.sendMail(Mailoptions, (err,hasiltMail) => {
-                    if(err) throw err
+                    // if(err) throw err
                     res.send('Transaction Rejected')
                 })
             })
@@ -72,8 +75,7 @@ module.exports = {
             })
     },
     getTransactionsHistory : (req,res) => {
-        var sql = `select id_user,tanggal, tanggal, item, total_harga, order_number,waktu from transaksi 
-                    where id_user = ${req.params.id} and status = 'Approved';`
+        var sql = `select id_user,tanggal, tanggal_bayar, item, total_harga, order_number,waktu from transaksi where id_user = ${req.params.id} and status = 'Approved';`
             db.query(sql, (err,hasil) => {
                 if(err) throw err
                 res.send(hasil)
@@ -87,7 +89,7 @@ module.exports = {
         })
     },
     filterHistory : (req,res) => {
-        var sql = `select * from transaksi where id_user = ${req.query.id_user} and status = 'Approved' and tanggal like '%-${req.query.month}-%';`
+        var sql = `select * from transaksi where id_user = '${req.query.id_user}' and status = 'Approved' and tanggal like '%-${req.query.month}-%';`
             db.query(sql, (err,result) => {
                 if(err) throw err
                 res.send(result)
