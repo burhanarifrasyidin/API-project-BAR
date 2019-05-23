@@ -2,12 +2,17 @@ var db = require('./../database')
 var fs = require('fs')
 
 module.exports = {
+    // =============== Get Product =============== 
+
     getProducts: (req, res) => {
         var sql = 'select * from product;'
         db.query(sql, (err, hasil) => {
             res.send(hasil)
         })
     },
+
+    // =============== Add Product =============== 
+
     addProducts: (req, res) => {
         try {
             var newData = JSON.parse(req.body.data)
@@ -21,6 +26,9 @@ module.exports = {
             res.send(err)
         }
     },
+
+    // =============== Edit Product =============== 
+
     editProducts: (req, res) => {
         var id = req.params.id
         if (req.file) {
@@ -42,6 +50,9 @@ module.exports = {
             })
         }
     },
+
+    // =============== Delete Product =============== 
+
     deleteProducts: (req, res) => {
         var id = req.params.id
         var sql = `select * from product where id = ${id}`
@@ -60,6 +71,9 @@ module.exports = {
             }
         })
     },
+
+    // =============== Get Product Detail =============== 
+
     productDetail: (req, res) => {
         var id = req.params.id
         var sql = `select * from product where id = ${id}`
@@ -68,6 +82,9 @@ module.exports = {
             res.send(hasil)
         })
     },
+
+    // =============== Get Filter Product =============== 
+
     filterProd: (req, res) => {
         var sql = `select * from product where category_product like '${req.query.category}%';`
         db.query(sql, (err, hasil) => {
@@ -75,6 +92,9 @@ module.exports = {
             res.send(hasil)
         })
     },
+
+    // =============== Get Product Discount =============== 
+
     saleProduct: (req, res) => {
         var sql = `select * from product where discount_product >= 15;`
         db.query(sql, (err, hasil) => {
@@ -82,6 +102,9 @@ module.exports = {
             res.send(hasil)
         })
     },
+
+    // =============== Get Filter Product =============== 
+
     filterProdList: (req, res) => {
         var sql = `select * from product where category_product like '${req.query.category}%';`
         db.query(sql, (err, hasil) => {

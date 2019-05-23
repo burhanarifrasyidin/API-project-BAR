@@ -3,6 +3,9 @@ const transporter = require('./../helpers/nodemailer')
 const crypto = require('crypto')
 
 module.exports = {
+
+    // =============== Get data User =============== 
+
     getAllUser: (req, res) => {
         var sql = 'select * from user;'
         db.query(sql, (err, hasil) => {
@@ -23,6 +26,9 @@ module.exports = {
             res.send(hasil)
         })
     },
+
+    // =============== Add data User / Verifikasi =============== 
+
     addUser: (req, res) => {
         var nama = req.body.username
         var email = req.body.email
@@ -55,6 +61,8 @@ module.exports = {
         })
     },
         
+    // =============== Edit data User  =============== 
+
     editUser : (req,res) => {
         var id = req.params.id
         var data = req.body
@@ -63,6 +71,9 @@ module.exports = {
             res.send('Edit Sukses')
         })
     },
+
+    // =============== Delete data User =============== 
+
     deleteUser :  (req,res) => {
         var id = req.params.id
         var sql = `delete from user where id =${id};`
@@ -71,6 +82,9 @@ module.exports = {
             res.send('Delete Sukses')
         })
     },
+
+    // =============== Add Hash User =============== 
+
     userLogin : (req,res) => {
         var username = req.query.username
         var password = req.query.password
@@ -81,6 +95,9 @@ module.exports = {
                 res.send(hasil)
         })
     },
+
+    // =============== Get data User Login  =============== 
+
     keepLogin : (req,res) => {
         var username = req.query.username
         var sql = `select * from user where username = '${username}';`
@@ -95,6 +112,8 @@ module.exports = {
            
         })
     },
+
+    // =============== Data User / Verifikasi =============== 
 
     verifyUser : (req,res) => {
         username = req.body.username

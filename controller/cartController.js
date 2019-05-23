@@ -149,7 +149,7 @@ module.exports = {
                         no : req.body.order_number,
                         nama : req.body.username,
                         tanggal : newData.tanggal,
-                        total : newData.total_harga
+                        total : newData.total_harga,status:req.body.status
                     }
                     var hasilHbrs = template(data)
                     var option = {
@@ -165,13 +165,12 @@ module.exports = {
                     pdf.create(hasilHbrs, option).toStream((err,hasilStream) => {
                         if(err) throw err
                         var optionNodemailer = {
-                            from : 'Test.com',
-                            // to : req.body.email,
-                            to : 'burhan.d3mits@gmail.com',
+                            from : 'OnOSepeda.com',
+                            to : req.body.email,
                             subject : 'Invoice Pembayaran untuk ' + data.nama,
-                            html : `<h3> Dear ${data.nama}, </h3>
+                            html : `<h3> Dear Bpk/Ibu ${data.nama}, </h3>
                             
-                            <p>Terima kasih telah membeli produk kami, Untuk menyelesaikan transaksi Anda silahkan upload bukti pembayaran Anda di <a href="http://localhost:3000/payment/${data.no}">here</a> </p>`,
+                            <p>Terima kasih telah membeli produk kami, Untuk menyelesaikan transaksi Anda silahkan upload bukti pembayaran Anda di <a href="http://localhost:3000/payment?status=${data.status}">here</a> </p>`,
                             attachments : [
                                 {
                                     filename : 'invoice.pdf',

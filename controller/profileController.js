@@ -2,6 +2,8 @@ var db = require('./../database')
 var fs = require('fs')
 
 module.exports = {
+    // =============== Get Data Profile =============== 
+
     getProfile: (req, res) => {
         var sql = `select e.id,u.id as idUser,e.nama,u.username,u.password,u.email,u.phone,e.tanggal_lahir,e.alamat,e.jenis_kelamin,image from edit_profile as e
         join user as u on e.id_user = u.id
@@ -10,6 +12,9 @@ module.exports = {
             res.send(hasil)
         })
     },
+
+    // =============== Add Data Profile =============== 
+
     addProfile: (req, res) => {
         try {
             var newData = JSON.parse(req.body.data)
@@ -23,6 +28,9 @@ module.exports = {
             res.send(err)
         }
     },
+
+    // =============== Edit Data Profile =============== 
+
     editProfile : (req,res) => {
         var id = req.params.id
         if (req.file) {
@@ -44,6 +52,9 @@ module.exports = {
             })
         }
     },
+
+    // =============== Del Data Profile =============== 
+
     deleteProfile: (req,res) => {
         id = req.params.id
         var sql = `delete from edit_profile where id = ${id}`
